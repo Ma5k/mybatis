@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mask.mybatis.mapper.OrdersCustomMapper">
+
+    <!-- 查询订单关联查询用户 -->
+    <!--    resultType实现，通过拓展新建拓展类OrdersCustom继承Orders类来实现-->
+<!--    <select id="findOrdersUser" resultType="com.mask.mybatis.entity.OrdersCustom">-->
+<!--        SELECT orders.*, user.username, user.sex, user.address-->
+<!--        FROM orders , USER-->
+<!--        WHERE orders.user_id = user.id-->
+<!--    </select>-->
+    
+</mapper>

@@ -3,6 +3,7 @@ package com.mask.mybatis.entity;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Mask
@@ -14,4 +15,5 @@ public class User {
     private Date birthday;
     private String sex;
     private String address;
+    private List<Orders> ordersList ;
 }

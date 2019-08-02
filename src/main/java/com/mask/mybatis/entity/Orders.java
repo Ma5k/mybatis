@@ -1,8 +1,8 @@
 package com.mask.mybatis.entity;
 
 import lombok.Data;
-
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Mask
@@ -14,4 +14,7 @@ public class Orders {
     private String number;
     private Date createtime;
     private String note;
+    private User user;
+    private List<OrderDetail> orderdetails;
+    private Double totalPrice;
 }

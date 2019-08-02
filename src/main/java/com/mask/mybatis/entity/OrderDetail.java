@@ -6,14 +6,14 @@ import lombok.Data;
  * @author Mask
  */
 @Data
-public class Detail {
+public class OrderDetail {
 
     private Integer id;
 
-    private Integer orderId;
+    private Integer ordersId;
 
-    private Integer goodsId;
+    private Integer itemsId;
 
-    private Integer count;
+    private Integer itemsNum;
 
 }
