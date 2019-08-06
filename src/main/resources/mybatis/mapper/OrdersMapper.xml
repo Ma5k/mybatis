@@ -12,7 +12,7 @@
         <result column="createtime" property="createtime"/>
         <result column="note" property="note"/>
 
-        <collection property="orderdetails" ofType="java.util.List" javaType="com.mask.mybatis.entity.OrderDetail">
+        <collection property="orderdetails" ofType="com.mask.mybatis.entity.OrderDetail" javaType="java.util.List">
             <id column="orderdetail_id" property="id"/>
             <result column="orders_id" property="ordersId"/>
             <result column="items_id" property="itemsId"/>
