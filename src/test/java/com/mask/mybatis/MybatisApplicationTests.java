@@ -34,12 +34,6 @@ public class MybatisApplicationTests {
      */
     @Test
     public void orderMapperTest() throws Exception {
-        //resultType方式
-//        List<OrdersCustom> ordersCustoms = ordersCustomMapper.findOrdersUser();
-//        System.out.println(ordersCustoms.size());
-
-//        List<Orders> ordersList = ordersMapper.findOrdersUser();
-//        System.out.println(ordersList.size());
 
         List<Orders> ordersList = ordersMapper.findOrdersAndOrderdetail();
         System.out.println(ordersList);

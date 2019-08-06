@@ -14,7 +14,5 @@ public class Orders {
     private String number;
     private Date createtime;
     private String note;
-    private User user;
     private List<OrderDetail> orderdetails;
-    private Double totalPrice;
 }

@@ -1,5 +1,5 @@
 ﻿# Host: localhost  (Version 5.7.21)
-# Date: 2019-08-02 18:17:38
+# Date: 2019-08-06 18:03:36
 # Generator: MySQL-Front 6.1  (Build 1.21)
 
 
@@ -64,7 +64,7 @@ CREATE TABLE `orders` (
 # Data for table "orders"
 #
 
-INSERT INTO `orders` VALUES (1,1,'101','2019-08-01 00:00:00','第一订单');
+INSERT INTO `orders` VALUES (1,1,'101','2019-08-01 00:00:00','第一订单'),(2,1,'202','2019-08-03 00:00:00','第二订单');
 
 #
 # Structure for table "orderdetail"
@@ -87,4 +87,4 @@ CREATE TABLE `orderdetail` (
 # Data for table "orderdetail"
 #
 
-INSERT INTO `orderdetail` VALUES (1,1,3,2),(2,1,1,3);
+INSERT INTO `orderdetail` VALUES (1,1,3,2),(2,1,1,3),(3,2,1,3),(4,2,2,1);

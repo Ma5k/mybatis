@@ -5,112 +5,30 @@
 
 <mapper namespace="com.mask.mybatis.mapper.OrdersMapper">
 
-    <!-- 订单查询关联查询用户的resultMap，即将整个查询的结果映射到orders中 -->
-    <resultMap type="com.mask.mybatis.entity.Orders" id="OrdersUserResultMap">
-        <!-- 配置要映射的订单信息，如果有多个列组成唯一标识，那需要配置多个id，
-        property指定将唯一表示映射到pojo中的哪个属性上 -->
+    <resultMap id="ordersAndDetailMap" type="com.mask.mybatis.entity.Orders">
         <id column="id" property="id"/>
         <result column="user_id" property="userId"/>
         <result column="number" property="number"/>
         <result column="createtime" property="createtime"/>
         <result column="note" property="note"/>
 
-        <!-- 配置要映射关联的用户信息，用于映射关联查询单个对象的信息，
-        property表示要将关联查询的用户信息映射到orders中的哪个属性 -->
-        <association property="user" javaType="com.mask.mybatis.entity.User">
-            <!-- id：关联查询用户的唯一表示
-            column:指定用于唯一表示用户信息的列
-            javaType:映射到User的哪个属性 -->
-            <id column="user_id" property="id"/>
-            <result column="" property="note"/>
-            <result column="username" property="username"/>
-            <result column="sex" property="sex"/>
-            <result column="address" property="address"/>
-        </association>
-    </resultMap>
-
-    <!-- 查询订单和订单明细的resultMap -->
-    <resultMap type="com.mask.mybatis.entity.Orders" id="OrdersAndOrderdetailResultMap" extends="OrdersUserResultMap">
-        <!-- 很明显这里的订单信息和用户信息和上面的重复，我们可以使用继承 -->
-        <!-- 订单信息 -->
-        <!-- 用户信息 -->
-
-        <!-- 订单明细信息，一个订单查询出了多个订单明细，要是用collection进行映射
-        collection:对关联查询到多条记录映射到集合中
-        property:映射到orders类中的哪个属性
-        ofType:要映射到集合中pojo的属性 -->
-        <collection property="orderdetails" ofType="com.mask.mybatis.entity.OrderDetail" javaType="java.util.ArrayList">
-            <!-- id：订单明细的唯一标识,property:要将订单明细的唯一标识映射到Orderdetail的哪个属性 -->
+        <collection property="orderdetails" ofType="java.util.List" javaType="com.mask.mybatis.entity.OrderDetail">
             <id column="orderdetail_id" property="id"/>
-            <result column="items_id" property="itemsId"/>
-            <result column="items_num" property="itemsNum"/>
             <result column="orders_id" property="ordersId"/>
             <result column="items_id" property="itemsId"/>
-
+            <result column="items_num" property="itemsNum"/>
         </collection>
+
     </resultMap>
+    <select id="findOrdersAndOrderdetail" resultMap="ordersAndDetailMap">
+    select orders.id id, orders.user_id user_id, orders.number number, orders.createtime createtime, orders.note note,
+            orderdetail.id orderdetail_id, orderdetail.orders_id orders_id, orderdetail.items_id items_id, orderdetail.items_num items_num
+    from orders left join orderdetail on orders.id = orderdetail.orders_id
+</select>
+<!--    <select id="findOrdersAndOrderdetail" resultMap="ordersAndDetailMap">
+        select orders.id id, orders.user_id user_id, orders.number number, orders.createtime createtime, orders.note note,
+        orderdetail.id orderdetail_id, orderdetail.orders_id orders_id, orderdetail.items_id items_id, orderdetail.items_num items_num
+        from orders,orderdetail where orders.id = orderdetail.orders_id
+        </select>-->
 
-    <!-- 查询用户和购买的商品，这里用不了继承 -->
-    <resultMap type="com.mask.mybatis.entity.User" id="UserAndItemsResultMap">
-        <!-- 用户信息 -->
-        <id column="user_id" property="id"/>
-        <result column="username" property="username"/>
-        <result column="sex" property="sex"/>
-        <result column="address" property="address"/>
-
-        <!-- 用户购买的订单信息
-        一个用户对应多个订单，使用collection -->
-        <collection property="ordersList" ofType="java.util.ArrayList" javaType="com.mask.mybatis.entity.Orders">
-            <id column="id" property="id"/>
-            <result column="user_id" property="userId"/>
-            <result column="number" property="number"/>
-            <result column="createtime" property="createtime"/>
-            <result column="note" property="note"/>
-
-            <!-- 订单明细，一个订单有多个订单明细 -->
-            <collection property="orderdetails" ofType="java.util.ArrayList"
-                        javaType="com.mask.mybatis.entity.OrderDetail">
-                <id column="orderdetail_id" property="id"/>
-                <result column="items_id" property="itemsId"/>
-                <result column="items_num" property="itemsNum"/>
-                <result column="orders_id" property="ordersId"/>
-                <result column="items_id" property="itemsId"/>
-
-                <!-- 商品，一个订单明细对应一个商品 -->
-                <association property="items" javaType="com.mask.mybatis.entity.Items">
-                    <id column="items_id" property="id"/>
-                    <result column="items_name" property="name"/>
-                    <result column="items_detail" property="detail"/>
-                    <result column="items_price" property="price"/>
-                </association>
-            </collection>
-        </collection>
-    </resultMap>
-
-    <!-- 查询用户和购买的商品信息，使用resultMap -->
-    <select id="findUserAndItems" resultMap="UserAndItemsResultMap">
-        SELECT  orders.*, user.username, user.sex,user.address, orderdetail.id orderdetail_id,
-                orderdetail.items_id, orderdetail.items_num, orderdetail.orders_id,
-                items.name items_name, items.detail items_detail, items.price items_price
-        FROM orders , USER , orderdetail , items
-        WHERE orders.user_id = user.id AND orderdetail.orders_id = orders.id AND orderdetail.items_id = items.id
-
-    </select>
-
-
-    <!-- 查询订单关联查询用户以及订单明细，使用resultMap -->
-    <select id="findOrdersAndOrderdetail" resultMap="OrdersAndOrderdetailResultMap">
-        SELECT  orders.*, user.username, user.sex,user.address, orderdetail.id orderdetail_id,
-                orderdetail.items_id, orderdetail.items_num, orderdetail.orders_id
-        FROM orders , USER , orderdetail
-        WHERE orders.user_id = user.id AND orderdetail.orders_id = orders.id
-
-    </select>
-
-    <!-- 查询订单关联查询用户，使用resultMap -->
-    <select id="findOrdersUser" resultMap="OrdersUserResultMap">
-        SELECT orders.*, user.username, user.sex, user.address
-        FROM orders , USER
-        WHERE orders.user_id = user.id
-    </select>
 </mapper>
